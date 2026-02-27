@@ -1,15 +1,27 @@
 import java.util.*;
 //programa de merda pra calcular valores nutricionais e quaiquer outras merdas q eu pensar na hora, tmj
 public class Main {
+    // classe simples para manter nome e valores por porção
+    static class FoodItem {
+        String nome;
+        double proteina, carbo, lipid, fibra, sodio;
+        FoodItem(String nome, double proteina, double carbo, double lipid, double fibra, double sodio) {
+            this.nome = nome;
+            this.proteina = proteina;
+            this.carbo = carbo;
+            this.lipid = lipid;
+            this.fibra = fibra;
+            this.sodio = sodio;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
-        // separate lists for each nutrient so we can total them individually
-        List<Double> proteinaList = new ArrayList<>();
-        List<Double> carboList = new ArrayList<>();
-        List<Double> lipidList = new ArrayList<>();
-        List<Double> sodioList = new ArrayList<>();
-        List<Double> fibraList = new ArrayList<>(); // nova lista de fibras
+        // lista de alimentos calculados
+        List<FoodItem> items = new ArrayList<>();
+        // mudar locale não funciona bem com Scanner se o usuário digitar vírgula
+        // então faremos parsing manual substituindo ',' por '.'
 
         // mudar locale não funciona bem com Scanner se o usuário digitar vírgula
         // então faremos parsing manual substituindo ',' por '.'
@@ -19,8 +31,8 @@ public class Main {
             System.out.println("\nMenu:");
             System.out.println("1. Calcular valores do alimento");
             System.out.println("2. Total de macro nutrientes");
-            System.out.println("3. pendiente");
-            System.out.println("4. pendente");
+            System.out.println("3. Remover alimento");
+            System.out.println("4. Lista de alimentos cadastrados");
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
             choice = sc.nextInt();
@@ -28,6 +40,8 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    System.out.print("Nome do alimento: ");
+                    String nome = sc.nextLine().trim();
                     System.out.println("Digite o tamanho da porcao");
                     double porcao = readDouble(sc);
                     System.out.print("Proteina: ");
@@ -54,24 +68,23 @@ public class Main {
                     System.out.println("Fibra: " + fibraVal + "g");
                     System.out.println("Sodio: " + (sodio * porcao) / 100 + "mg");
 
-                    proteinaList.add(proteinaVal);
-                    carboList.add(carboVal);
-                    lipidList.add(lipidVal);
-                    fibraList.add(fibraVal);
-                    sodioList.add((sodio * porcao) / 100);
+                    // adiciona item à lista
+                    items.add(new FoodItem(nome, proteinaVal, carboVal, lipidVal, fibraVal, (sodio * porcao)/100));
                     break;
                 case 2:
                     System.out.println("________________________________");
                     System.out.println("Total de macro nutrientes:");
-                    if (proteinaList.isEmpty()) {
+                    if (items.isEmpty()) {
                         System.out.println("Nenhum valor calculado ainda.");
                     } else {
                         double totalProt = 0, totalCarb = 0, totalLip = 0, totalFibra = 0, totalSod = 0;
-                        for (double v : proteinaList) totalProt += v;
-                        for (double v : carboList) totalCarb += v;
-                        for (double v : lipidList) totalLip += v;
-                        for (double v : fibraList)  totalFibra += v;
-                        for (double v : sodioList) totalSod += v;
+                        for (FoodItem f : items) {
+                            totalProt += f.proteina;
+                            totalCarb += f.carbo;
+                            totalLip += f.lipid;
+                            totalFibra += f.fibra;
+                            totalSod += f.sodio;
+                        }
                         System.out.println("Proteina total: " + totalProt + "g");
                         System.out.println("Carboidrato total: " + totalCarb + "g");
                         System.out.println("Lipidios total: " + totalLip + "g");
@@ -80,12 +93,37 @@ public class Main {
                     }
                     break;
                 case 3:
-                    System.out.println(">> Depositing...");
-                    // your code here
+                    System.out.println("________________________________");
+                    System.out.println("Remover alimento:");
+                    if (items.isEmpty()) {
+                        System.out.println("Nenhum alimento registrado.");
+                    } else {
+                        for (int i = 0; i < items.size(); i++) {
+                            System.out.printf("%d. %s\n", i+1, items.get(i).nome);
+                        }
+                        System.out.print("Digite o número do alimento a remover: ");
+                        int idx = sc.nextInt();
+                        sc.nextLine();
+                        if (idx >= 1 && idx <= items.size()) {
+                            FoodItem removed = items.remove(idx-1);
+                            System.out.println("Removido: " + removed.nome);
+                        } else {
+                            System.out.println("Índice inválido.");
+                        }
+                    }
                     break;
                 case 4:
-                    System.out.println(">> Withdrawing...");
-                    // your code here
+                    System.out.println("________________________________");
+                    System.out.println("Alimentos cadastrados:");
+                    if (items.isEmpty()) {
+                        System.out.println("Nenhum alimento registrado.");
+                    } else {
+                        for (int i = 0; i < items.size(); i++) {
+                            FoodItem f = items.get(i);
+                            System.out.printf("%d. %s - P:%.2fg C:%.2fg L:%.2fg F:%.2fg S:%.2fmg\n",
+                                    i+1, f.nome, f.proteina, f.carbo, f.lipid, f.fibra, f.sodio);
+                        }
+                    }
                     break;
                 case 5:
                     System.out.println("Exiting program. Goodbye!");

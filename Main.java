@@ -33,7 +33,8 @@ public class Main {
             System.out.println("2. Total de macro nutrientes");
             System.out.println("3. Remover alimento");
             System.out.println("4. Lista de alimentos cadastrados");
-            System.out.println("5. Exit");
+            System.out.println("5. Conversao de preco");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             choice = sc.nextInt();
             sc.nextLine(); // clear buffer
@@ -126,12 +127,33 @@ public class Main {
                     }
                     break;
                 case 5:
+                    // cálculo de preço per capita bruto sem pedir nome
+                    System.out.print("Medida comercializada (quantidade): ");
+                    double medida = readDouble(sc);
+                    System.out.print("Preço da medida: ");
+                    double precoMedida = readDouble(sc);
+                    System.out.print("Per capita bruto (mesma unidade da medida): ");
+                    double perCapita = readDouble(sc);
+
+                    if (medida <= 0) {
+                        System.out.println("Medida deve ser maior que zero.");
+                    } else {
+                        double precoPerCapita = precoMedida * perCapita / medida;
+                        System.out.println("---------------------------------");
+                        System.out.println("Resultado:");
+                        System.out.println("Medida comercializada: " + medida);
+                        System.out.println("Preço da medida: R$" + precoMedida);
+                        System.out.println("Per capita bruto: " + perCapita);
+                        System.out.println("Preço por per capita bruto: R$" + precoPerCapita);
+                    }
+                    break;
+                case 6:
                     System.out.println("Exiting program. Goodbye!");
                     break;
                 default:
                     System.out.println("Invalid option. Try again.");
             }
-        } while (choice != 5);
+        } while (choice != 6);
 
         sc.close();
     }

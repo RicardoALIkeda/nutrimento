@@ -1,7 +1,6 @@
 import java.util.*;
 //programa de merda pra calcular valores nutricionais e quaiquer outras merdas q eu pensar na hora, tmj
 public class Main {
-    // classe simples para manter nome e valores por porção
     static class FoodItem {
         String nome;
         double proteina, carbo, lipid, fibra, sodio;
@@ -18,13 +17,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
-        // lista de alimentos calculados
-        List<FoodItem> items = new ArrayList<>();
-        // mudar locale não funciona bem com Scanner se o usuário digitar vírgula
-        // então faremos parsing manual substituindo ',' por '.'
 
-        // mudar locale não funciona bem com Scanner se o usuário digitar vírgula
-        // então faremos parsing manual substituindo ',' por '.'
+        List<FoodItem> items = new ArrayList<>();
 
         System.out.println("\n=== Contador punhetinha 123 ===");
         do {
@@ -37,7 +31,7 @@ public class Main {
             System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             choice = sc.nextInt();
-            sc.nextLine(); // clear buffer
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -69,7 +63,6 @@ public class Main {
                     System.out.println("Fibra: " + fibraVal + "g");
                     System.out.println("Sodio: " + (sodio * porcao) / 100 + "mg");
 
-                    // adiciona item à lista
                     items.add(new FoodItem(nome, proteinaVal, carboVal, lipidVal, fibraVal, (sodio * porcao)/100));
                     break;
                 case 2:
@@ -127,7 +120,6 @@ public class Main {
                     }
                     break;
                 case 5:
-                    // cálculo de preço per capita bruto sem pedir nome
                     System.out.print("Medida comercializada (quantidade): ");
                     double medida = readDouble(sc);
                     System.out.print("Preço da medida: ");

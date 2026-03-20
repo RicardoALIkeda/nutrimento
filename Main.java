@@ -114,8 +114,8 @@ public class Main {
                     } else {
                         for (int i = 0; i < items.size(); i++) {
                             FoodItem f = items.get(i);
-                            System.out.printf("%d. %s - P:%.2fg C:%.2fg L:%.2fg F:%.2fg S:%.2fmg\n",
-                                    i+1, f.nome, f.proteina, f.carbo, f.lipid, f.fibra, f.sodio);
+                            System.out.printf("%d. %s - Proteina:%.2fg lipideos:%.2fg carboidratos:%.2fg fibra:%.2fg sodio:%.2fmg\n",
+                                    i+1, f.nome, f.proteina, f.lipid, f.carbo, f.fibra, f.sodio);
                         }
                     }
                     break;
